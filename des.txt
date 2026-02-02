@@ -1,0 +1,158 @@
+# 📌 Description du projet
+
+### **Application web de candidature automatique avec IA**
+
+---
+
+## 🧩 Présentation générale
+
+Ce projet est une **application web full-stack** qui permet d’**automatiser l’envoi de candidatures par email** à partir d’une offre d’emploi.
+L’utilisateur renseigne simplement :
+
+* l’**email du recruteur**
+* l’**offre d’emploi**
+
+L’application utilise ensuite une **intelligence artificielle** pour générer automatiquement un **email de motivation personnalisé**, puis envoie cet email avec le **CV en pièce jointe**.
+
+---
+
+## 🎯 Objectifs du projet
+
+* Gagner du temps dans l’envoi de candidatures
+* Générer des messages professionnels adaptés à chaque offre
+* Réduire les erreurs de rédaction
+* Proposer une interface simple et intuitive
+* Mettre en pratique JavaScript, Node.js et l’IA dans un projet concret
+
+---
+
+## 👤 Utilisateur cible
+
+* Étudiants et jeunes diplômés
+* Développeurs à la recherche de stages ou d’emplois
+* Toute personne qui postule fréquemment à des offres par email
+
+---
+
+## 🖥️ Fonctionnalités principales
+
+### 1️⃣ Interface utilisateur (Frontend)
+
+* Formulaire web simple
+* Champ pour l’email du recruteur
+* Zone de texte pour coller l’offre d’emploi
+* Bouton d’envoi
+* Message de confirmation après l’envoi
+
+---
+
+### 2️⃣ Génération intelligente du message
+
+* Analyse du contenu de l’offre
+* Création automatique d’un email de candidature :
+
+  * professionnel
+  * clair
+  * personnalisé
+* Ton formel et adapté au contexte professionnel
+
+---
+
+### 3️⃣ Envoi automatique de l’email
+
+* Envoi via SMTP (Gmail)
+* Ajout automatique du CV en pièce jointe
+* Objet d’email professionnel
+* Sécurité des identifiants (backend uniquement)
+
+---
+
+## 🧠 Architecture technique
+
+### Frontend
+
+* HTML
+* CSS (optionnel : Tailwind)
+* JavaScript (Vanilla)
+
+### Backend
+
+* Node.js
+* Express.js
+* OpenAI API (génération du message)
+* Nodemailer (envoi d’emails)
+
+---
+
+## 📁 Structure du projet
+
+```
+project/
+│
+├── server.js
+├── package.json
+├── cv.pdf
+└── public/
+    ├── index.html
+    └── script.js
+```
+
+---
+
+## 🔄 Flux de fonctionnement
+
+1. L’utilisateur ouvre l’interface web
+2. Il saisit l’email du recruteur
+3. Il colle l’offre d’emploi
+4. Il clique sur « Envoyer »
+5. Le frontend envoie les données au backend
+6. Le backend :
+
+   * appelle l’API OpenAI
+   * génère le message de candidature
+   * envoie l’email avec le CV
+7. L’utilisateur reçoit une confirmation
+
+---
+
+## 🔐 Sécurité et bonnes pratiques
+
+* Clé OpenAI stockée côté serveur
+* Mot de passe Gmail via mot de passe d’application
+* Aucune donnée sensible exposée côté client
+* Validation des champs du formulaire
+
+---
+
+## 📈 Évolutions possibles
+
+* Aperçu et édition du message avant envoi
+* Upload dynamique du CV
+* Historique des candidatures
+* Choix du ton (formel, dynamique, court)
+* Support de plusieurs langues
+* Authentification utilisateur
+
+---
+
+## 🧪 Intérêt pédagogique
+
+Ce projet permet de démontrer :
+
+* Maîtrise de JavaScript
+* Compréhension du client / serveur
+* Utilisation d’API externes
+* Automatisation de tâches réelles
+* Intégration de l’IA dans une application web
+
+---
+
+## 💼 Utilisation en portfolio
+
+Ce projet est idéal pour :
+
+* un portfolio développeur
+* un projet de fin de formation
+* une démonstration de compétences full-stack
+* un cas d’usage concret de l’IA
+
