@@ -30,7 +30,13 @@ const STANDARD_CONTENT = {
 const sendNextEmail = async () => {
     try {
         console.log('Scheduler: Checking for pending emails...');
-        const emailToSend = await Email.findOne({ status: 'pending' }).sort({ createdAt: 1 });
+        
+        // Use findOneAndUpdate to atomically mark as "processing" to avoid race condition
+        const emailToSend = await Email.findOneAndUpdate(
+            { status: 'pending' },
+            { $set: { status: 'processing' } },
+            { sort: { createdAt: 1 }, new: true }
+        );
 
         if (!emailToSend) {
             console.log('Scheduler: No pending emails found.');
@@ -42,17 +48,31 @@ const sendNextEmail = async () => {
         try {
             await sendApplicationEmail(emailToSend.email, STANDARD_CONTENT);
             
-            emailToSend.status = 'sent';
-            emailToSend.sentAt = new Date();
-            await emailToSend.save();
+            // Mark as sent
+            await Email.updateOne(
+                { _id: emailToSend._id },
+                { 
+                    $set: { 
+                        status: 'sent',
+                        sentAt: new Date()
+                    }
+                }
+            );
             
             console.log(`Scheduler: Email sent successfully to ${emailToSend.email}`);
         } catch (err) {
             console.error(`Scheduler: Failed to send email to ${emailToSend.email}`, err);
             
-            emailToSend.status = 'failed';
-            emailToSend.error = err.message;
-            await emailToSend.save();
+            // Mark as failed
+            await Email.updateOne(
+                { _id: emailToSend._id },
+                { 
+                    $set: { 
+                        status: 'failed',
+                        error: err.message
+                    }
+                }
+            );
         }
 
     } catch (error) {

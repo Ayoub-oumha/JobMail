@@ -1,5 +1,6 @@
 import { generateEmailContent } from '../services/openai.js';
 import { sendApplicationEmail } from '../services/mailer.js';
+import Email from '../models/Email.js';
 
 export const applyForJob = async (req, res) => {
     try {
@@ -58,6 +59,22 @@ export const applyForJob = async (req, res) => {
         // Analyze results
         const successful = results.filter(r => r.status === 'fulfilled');
         const failed = results.filter(r => r.status === 'rejected');
+        
+        // Mark successfully sent emails as "sent" in database to avoid duplicates from scheduler
+        for (let i = 0; i < emailList.length; i++) {
+            if (results[i].status === 'fulfilled') {
+                await Email.updateOne(
+                    { email: emailList[i] },
+                    { 
+                        $set: { 
+                            status: 'sent',
+                            sentAt: new Date()
+                        }
+                    },
+                    { upsert: false } // Don't create if doesn't exist
+                ).catch(err => console.log('Note: Email not in DB:', emailList[i]));
+            }
+        }
 
         if (successful.length === 0 && failed.length > 0) {
             // If ALL failed, throw the error of the first one to trigger catch block

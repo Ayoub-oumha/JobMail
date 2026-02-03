@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const emailSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
-  status: { type: String, enum: ['pending', 'sent', 'failed'], default: 'pending' },
+  status: { type: String, enum: ['pending', 'processing', 'sent', 'failed'], default: 'pending' },
   sentAt: { type: Date },
   error: { type: String },
   createdAt: { type: Date, default: Date.now }
