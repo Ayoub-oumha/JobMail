@@ -10,7 +10,7 @@ services:
       - ./server/.env
     environment:
       - PORT=3001
-      - CLIENT_URL=http://localhost:5173
+      - CLIENT_URL=http://72.61.105.71:8081
     volumes:
       - ./server/assets:/app/server/assets
     restart: unless-stopped
