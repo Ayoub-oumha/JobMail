@@ -29,30 +29,27 @@ export const applyForJob = async (req, res) => {
             generatedContent = {
                 subject: "Développeur Full Stack – Opportunités professionnelles",
                 htmlBody: `
-                    <p>Madame, Monsieur,</p>
+                    <p>Bonjour,</p>
                     <p>Je me permets de vous contacter afin de vous proposer mon profil pour d’éventuelles opportunités au sein de votre entreprise.</p>
                     <p>Développeur Full Stack, je dispose d’une expérience en développement d’applications web modernes, aussi bien côté frontend que backend. J’ai travaillé avec des technologies telles que React, Next.js, Node.js, PHP, Symfony, ainsi que sur des environnements DevOps incluant Docker et CI/CD.</p>
                     <p>Curieux, motivé et doté d’un bon esprit d’équipe, je suis toujours intéressé par de nouveaux défis techniques et par la contribution à des projets à forte valeur ajoutée.</p>
                     <p>Je me tiens à votre disposition pour toute information complémentaire et serais ravi d’échanger avec vous.</p>
                     <p>Cordialement,<br>Salahdine Daha</p>
                 `,
-                textBody: `Madame, Monsieur,
+                textBody: `Bonjour,
 
-Je me permets de vous contacter afin de vous proposer mon profil pour d’éventuelles opportunités au sein de votre entreprise.
-
-Développeur Full Stack, je dispose d’une expérience en développement d’applications web modernes, aussi bien côté frontend que backend. J’ai travaillé avec des technologies telles que React, Next.js, Node.js, PHP, Symfony, ainsi que sur des environnements DevOps incluant Docker et CI/CD.
-
-Curieux, motivé et doté d’un bon esprit d’équipe, je suis toujours intéressé par de nouveaux défis techniques et par la contribution à des projets à forte valeur ajoutée.
-
-Je me tiens à votre disposition pour toute information complémentaire et serais ravi d’échanger avec vous.
-
-Cordialement,
-Salahdine Daha`
-            };
+                    Je me permets de vous contacter afin de vous proposer mon profil pour d’éventuelles opportunités au sein de votre entreprise.
+                    
+                    Développeur Full Stack, je dispose d’une expérience en développement d’applications web modernes, aussi bien côté frontend que backend. J’ai travaillé avec des technologies telles que React, Next.js, Node.js, PHP, Symfony, ainsi que sur des environnements DevOps incluant Docker et CI/CD.
+                    
+                    Curieux, motivé et doté d’un bon esprit d’équipe, je suis toujours intéressé par de nouveaux défis techniques et par la contribution à des projets à forte valeur ajoutée.
+                    
+                    Je me tiens à votre disposition pour toute information complémentaire et serais ravi d’échanger avec vous.
+                    
+                    Cordialement,
+                    Salahdine Daha`
+                                };
         }
-        
-        // 2. Send email via SMTP to ALL recipients
-        console.log(`Sending emails to ${emailList.length} recipients...`);
         
         // Use Promise.all to send efficiently in parallel (or mostly parallel)
         const sendPromises = emailList.map(recipient => sendApplicationEmail(recipient, generatedContent));

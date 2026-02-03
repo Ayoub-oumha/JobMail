@@ -39,6 +39,7 @@ export const generateEmailContent = async (offerText) => {
                     - 'subject' (email subject line)
                     - 'htmlBody' (email body in HTML format, with <br> for line breaks)
                     - 'textBody' (same email body in plain text format, no HTML tags)
+                    - always start with Bonjour and not (Madame, Monsieur or somthing else)
                     
                     IMPORTANT INSTRUCTIONS:
                     1. The email MUST be written in FRENCH.
