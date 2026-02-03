@@ -21,7 +21,7 @@ services:
       dockerfile: client/Dockerfile
     container_name: jobmailer-frontend
     ports:
-      - "5173:80"
+      - "8081:80"
     depends_on:
       - backend
     restart: unless-stopped

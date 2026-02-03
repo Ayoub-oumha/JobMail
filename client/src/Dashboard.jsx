@@ -12,8 +12,8 @@ export default function Dashboard() {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                // Ensure this matches your server port
-                const response = await fetch('http://localhost:3001/api/stats');
+                // Use relative path for production (via Nginx proxy)
+                const response = await fetch('/api/stats');
                 if (!response.ok) throw new Error('Failed to fetch stats');
                 const data = await response.json();
                 setStats(data);
