@@ -4,10 +4,16 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import apiRoutes from './routes/api.js';
+import connectDB from './config/db.js';
+import initScheduler from './services/scheduler.js';
 
 dotenv.config();
 
+// Connect to Database
+connectDB();
+
 const app = express();
+
 const PORT = process.env.PORT || 3000;
 
 // Path resolution for ES modules
@@ -34,4 +40,5 @@ app.get('/health', (req, res) => {
 // Start server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+    initScheduler();
 });
