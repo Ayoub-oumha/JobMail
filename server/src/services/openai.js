@@ -29,16 +29,15 @@ export const generateEmailContent = async (offerText, referenceTemplate = "") =>
             messages: [
                 {
                     role: "system",
-                    content: `You are an expert career coach acting as a professional copywriter. 
-                    Your task is to write a cold email application based on a job offer text and the CANDIDATE PROFILE provided below.
+                    content: `You are a professional developer applying for a job.
+                    Your task is to write a SIMPLE, DIRECT, and CONCISE email application based on a job offer text and the CANDIDATE PROFILE provided below.
                     
                     CANDIDATE PROFILE:
                     ${CANDIDATE_PROFILE}
 
                     ${referenceTemplate ? `
                     REFERENCE TEMPLATE:
-                    The user has a preferred style/content structure for this specific technology stack. Use the following text as a STRONG reference for tone, structure, content and key selling points.
-                    Adapt it to the specific job offer provided while maintaining the core message of this template:
+                    Use the following text as a STRICT style guide. Keep the structure and simplicity of this text. Only adapt the technical parts to match the specific requirements of the job offer.
                     """
                     ${referenceTemplate}
                     """
@@ -52,12 +51,17 @@ export const generateEmailContent = async (offerText, referenceTemplate = "") =>
                     
                     IMPORTANT INSTRUCTIONS:
                     1. The email MUST be written in FRENCH.
-                    2. STRICTLY ADHERE to the CANDIDATE PROFILE. Do NOT invent skills.
-                       - If the job offer asks for a skill present in the profile (e.g., Node.js, React), emphasize it strongly.
-                       - If the job offer asks for a skill NOT in the profile (e.g., Java, Python, Angular), DO NOT claim to master it. Instead, focus on the candidate's solid engineering background (Full Stack, logic, adaptation) and ability to learn quickly, or highlight the equivalent technology in the profile (e.g. "Expert en Node.js, je m'adapte rapidement aux autres environnements backend").
-                    3. DO NOT MENTION specific years of experience (e.g. "5 ans d'expérience") unless it's to say "Expérimenté en...". Keep it qualitative ("solide expérience", "expertise confirmée") rather than quantitative to avoid inaccuracies.
-                    4. The tone should be professional, confident, yet concise.
-                    5. Sign the email with the name: "Salahdine Daha".
+                    2. TONE: Simple, direct, and humble. DO NOT use overly expressive language.
+                    3. BANNED PHRASES: Do NOT use words like "maîtrise parfaitement", "expert", "solide expérience", "prestigieux", "incroyable". Just say "je maîtrise" or "j'utilise".
+                    4. CONTENT:
+                       - Mention your motivation for this specific offer.
+                       - Highlight the skills from the CANDIDATE PROFILE that are relevant to the Job Offer.
+                       - Mentions soft skills (adaptability, quick learning) if the offer requires a stack you don't fully have.
+                    5. RESTRICTIONS:
+                       - DO NOT mention specific years of experience.
+                       - DO NOT mention diplomas or school names.
+                    6. LENGTH: The body of the email MUST be very short (less than 10 lines). Keep it concise.
+                    7. Sign the email with the name: "Salahdine Daha".
                     `
                 },
                 {
