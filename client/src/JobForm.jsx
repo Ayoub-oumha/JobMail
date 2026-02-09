@@ -17,6 +17,7 @@ const formSchema = z.object({
     return emails.every(email => z.string().email().safeParse(email).success);
   }, { message: "Un ou plusieurs emails sont invalides. Séparez-les par des virgules." }),
   offerText: z.string().optional(),
+  stack: z.string().optional(),
 });
 
 export default function JobForm() {
@@ -24,6 +25,9 @@ export default function JobForm() {
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      stack: ''
+    }
   });
 
   const onSubmit = async (data) => {
@@ -36,7 +40,8 @@ export default function JobForm() {
         },
         body: JSON.stringify({
           email: data.recruiterEmail,
-          offerText: data.offerText
+          offerText: data.offerText,
+          stack: data.stack
         }),
       });
 
@@ -77,6 +82,19 @@ export default function JobForm() {
             {errors.recruiterEmail && (
               <p className="text-sm text-destructive">{errors.recruiterEmail.message}</p>
             )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="stack">Stack Technique (Optionnel)</Label>
+            <select
+              id="stack"
+              {...register('stack')}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <option value="">Général (Tous les stacks)</option>
+              <option value="php">PHP (Laravel, Symfony)</option>
+              <option value="mern">MERN Stack (Node.js, React)</option>
+            </select>
           </div>
 
           <div className="space-y-2">

@@ -8,7 +8,7 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 // Assets are in server/assets, relative to src/services/mailer.js which is ../../assets
-const CV_PATH = path.join(__dirname, '../../assets/cv.pdf');
+const DEFAULT_CV_PATH = path.join(__dirname, '../../assets/cv.pdf');
 
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
@@ -25,6 +25,7 @@ export const sendApplicationEmail = async (toEmail, content) => {
         // Use htmlBody if available, fallback to body (for backward compatibility if needed)
         const htmlContent = content.htmlBody || content.body;
         const textContent = content.textBody || "Veuillez consulter la version HTML de ce message.";
+        const cvPath = content.cvPath || DEFAULT_CV_PATH;
 
         const info = await transporter.sendMail({
             from: `"Salahdine Daha" <${process.env.SMTP_USER}>`, // Sender address with real name
@@ -36,7 +37,7 @@ export const sendApplicationEmail = async (toEmail, content) => {
             attachments: [
                 {
                     filename: 'CV - Salahdine Daha.pdf', // Professional filename
-                    path: CV_PATH
+                    path: cvPath
                 }
             ]
         });

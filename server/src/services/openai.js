@@ -22,7 +22,7 @@ Experience:
 Soft Skills: Agilité, Créativité, Esprit d'équipe, Communication, Initiative, Adaptation
 `;
 
-export const generateEmailContent = async (offerText) => {
+export const generateEmailContent = async (offerText, referenceTemplate = "") => {
     try {
         const completion = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
@@ -34,6 +34,15 @@ export const generateEmailContent = async (offerText) => {
                     
                     CANDIDATE PROFILE:
                     ${CANDIDATE_PROFILE}
+
+                    ${referenceTemplate ? `
+                    REFERENCE TEMPLATE:
+                    The user has a preferred style/content structure for this specific technology stack. Use the following text as a STRONG reference for tone, structure, content and key selling points.
+                    Adapt it to the specific job offer provided while maintaining the core message of this template:
+                    """
+                    ${referenceTemplate}
+                    """
+                    ` : ""}
 
                     The output must be a JSON object with three fields: 
                     - 'subject' (email subject line)
