@@ -45,8 +45,8 @@ export const generateEmailContent = async (offerText, referenceTemplate = "") =>
 
                     The output must be a JSON object with three fields: 
                     - 'subject' (email subject line)
-                    - 'htmlBody' (email body in HTML format, with <br> for line breaks)
-                    - 'textBody' (same email body in plain text format, no HTML tags)
+                    - 'htmlBody' (email body in HTML format, use <br><br> between paragraphs to create visible separation)
+                    - 'textBody' (same email body in plain text format, use double newlines \\n\\n between paragraphs)
                     - always start with Bonjour and not (Madame, Monsieur or somthing else)
                     
                     IMPORTANT INSTRUCTIONS:
