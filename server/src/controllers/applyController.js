@@ -98,7 +98,7 @@ export const applyForJob = async (req, res) => {
                 // Use standard spontaneous application template
                 console.log('Using standard spontaneous application template...');
                 generatedContent = {
-                    subject: "Développeur Full Stack – Opportunités professionnelles",
+                    subject: "Candidature au poste de Développeur Full Stack",
                     htmlBody: `
                         <p>Bonjour,</p>
                         <p>Je me permets de vous contacter afin de vous proposer mon profil pour d’éventuelles opportunités au sein de votre entreprise.</p>
