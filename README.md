@@ -212,7 +212,7 @@ Avant de commencer, assure-toi d'avoir installé :
 | 🐳 Docker | Optionnel (prod) | `docker --version` |
 
 Tu auras aussi besoin de :
-- 🔑 **Une clé API OpenAI** → [platform.openai.com](https://platform.openai.com)
+- 🔑 **Une clé API Gemini** → [Google AI Studio](https://aistudio.google.com/app/apikey)
 - 📬 **Un compte Gmail** avec un **mot de passe d'application** (voir ci-dessous)
 
 ---
@@ -244,8 +244,10 @@ MONGO_URI=mongodb://localhost:27017/jobmailer
 # Ou avec MongoDB Atlas :
 # MONGO_URI=mongodb+srv://user:password@cluster.mongodb.net/jobmailer
 
-# OpenAI
-OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxx
+# Gemini
+GEMINI_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxx
+# Optionnel (par défaut: gemini-1.5-flash)
+GEMINI_MODEL=gemini-1.5-flash
 
 # Gmail SMTP
 SMTP_HOST=smtp.gmail.com
@@ -636,7 +638,7 @@ Vérifie que le serveur est en ligne.
 
 ## 👤 Auteur
 
-**Salahdine Daha**
+**Ayoub Oumha**
 
 ---
 

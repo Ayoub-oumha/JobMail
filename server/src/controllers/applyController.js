@@ -13,7 +13,7 @@ const TEMPLATES = {
         subject: "Candidature — Développeur Full Stack / PHP (Laravel & Symfony)",
         textBody: `Bonjour,
 
-Je m’appelle Salahdine DAHA et je suis développeur Full Stack. Passionné par la création de solutions web performantes, je maîtrise aussi bien le Frontend (React Js, Tailwind) que le Backend (PHP, Laravel, Symfony). Mon expertise inclut également des compétences en DevOps (Docker, CI/CD) et la gestion de bases de données relationnelles.
+Je m’appelle Ayoub Oumha et je suis développeur Full Stack. Passionné par la création de solutions web performantes, je maîtrise aussi bien le Frontend (React Js, Tailwind) que le Backend (PHP, Laravel, Symfony). Mon expertise inclut également des compétences en DevOps (Docker, CI/CD) et la gestion de bases de données relationnelles.
 
 J’ai eu l’opportunité de mettre mes compétences en pratique lors de stages concrets et de projets ambitieux, notamment en remportant le Premier Prix du Hackathon Sofrecom. Ces expériences m’ont appris à être réactif, créatif et à m’adapter rapidement aux besoins d’une équipe technique.
 
@@ -23,14 +23,14 @@ Vous trouverez mon CV ci-joint pour plus de détails sur mon parcours. Je reste 
 
 Cordialement,
 
-Salahdine DAHA`,
+Ayoub Oumha`,
         cvFile: 'PHP.pdf'
     },
     mern: {
         subject: "Candidature — Développeur Full Stack (Node.js / React / NestJS)",
         textBody: `Bonjour,
 
-Je m’appelle Salahdine DAHA et je suis développeur Full Stack. Passionné par la création de solutions web modernes, je maîtrise parfaitement les technologies JavaScript/TypeScript, notamment avec React Js en Frontend et Node.js, Express ou NestJS en Backend.
+Je m’appelle Ayoub Oumha et je suis développeur Full Stack. Passionné par la création de solutions web modernes, je maîtrise parfaitement les technologies JavaScript/TypeScript, notamment avec React Js en Frontend et Node.js, Express ou NestJS en Backend.
 
 Mon expertise technique s'appuie sur des réalisations concrètes, comme mon projet E-MARKET, où j'ai mis en place une architecture modulaire avec React Query, Redux Toolkit et MongoDB, tout en intégrant des tests automatisés et une CI/CD via GitHub Actions. J'ai également remporté le Premier Prix du Hackathon Sofrecom pour le développement d'une plateforme d'analyse intelligente du CO 2.
 
@@ -42,7 +42,7 @@ Vous trouverez mon CV ci-joint pour plus de détails sur mon parcours. Je reste 
 
 Cordialement,
 
-Salahdine DAHA`,
+Ayoub Oumha`,
         cvFile: 'MERN STACK.pdf'
     },
     default: {
@@ -102,23 +102,23 @@ export const applyForJob = async (req, res) => {
                     htmlBody: `
                         <p>Bonjour,</p>
                         <p>Je me permets de vous contacter afin de vous proposer mon profil pour d’éventuelles opportunités au sein de votre entreprise.</p>
-                        <p>Développeur Full Stack, je dispose d’une expérience en développement d’applications web modernes, aussi bien côté frontend que backend. J’ai travaillé avec des technologies telles que React, Next.js, Node.js, PHP, Symfony, ainsi que sur des environnements DevOps incluant Docker et CI/CD.</p>
+                        <p>Développeur Full Stack, je dispose d’une expérience en développement d’applications web modernes, aussi bien côté frontend que backend. J’ai travaillé avec des technologies telles que Java, Spring Boot, Angular, React, Next.js, Node.js, PHP, Laravel, ainsi que sur des environnements DevOps incluant Docker et CI/CD.</p>
                         <p>Curieux, motivé et doté d’un bon esprit d’équipe, je suis toujours intéressé par de nouveaux défis techniques et par la contribution à des projets à forte valeur ajoutée.</p>
                         <p>Je me tiens à votre disposition pour toute information complémentaire et serais ravi d’échanger avec vous.</p>
-                        <p>Cordialement,<br>Salahdine Daha</p>
+                        <p>Cordialement,<br>Ayoub Oumha</p>
                     `,
                     textBody: `Bonjour,
 
                         Je me permets de vous contacter afin de vous proposer mon profil pour d’éventuelles opportunités au sein de votre entreprise.
                         
-                        Développeur Full Stack, je dispose d’une expérience en développement d’applications web modernes, aussi bien côté frontend que backend. J’ai travaillé avec des technologies telles que React, Next.js, Node.js, PHP, Symfony, ainsi que sur des environnements DevOps incluant Docker et CI/CD.
+                        Développeur Full Stack, je dispose d’une expérience en développement d’applications web modernes, aussi bien côté frontend que backend. J’ai travaillé avec des technologies telles que Java, Spring Boot, Angular, React, Next.js, Node.js, PHP, Laravel, ainsi que sur des environnements DevOps incluant Docker et CI/CD.
                         
                         Curieux, motivé et doté d’un bon esprit d’équipe, je suis toujours intéressé par de nouveaux défis techniques et par la contribution à des projets à forte valeur ajoutée.
                         
                         Je me tiens à votre disposition pour toute information complémentaire et serais ravi d’échanger avec vous.
                         
                         Cordialement,
-                        Salahdine Daha`
+                        Ayoub Oumha`
                 };
             }
         }

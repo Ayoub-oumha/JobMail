@@ -28,7 +28,7 @@ export const sendApplicationEmail = async (toEmail, content) => {
         const cvPath = content.cvPath || DEFAULT_CV_PATH;
 
         const info = await transporter.sendMail({
-            from: `"Salahdine Daha" <${process.env.SMTP_USER}>`, // Sender address with real name
+            from: `"Ayoub Oumha" <${process.env.SMTP_USER}>`, // Sender address with real name
             to: toEmail, // Recruiter's email
             // bcc: process.env.SMTP_USER, // Optional: Receive a copy
             subject: content.subject,
@@ -36,7 +36,7 @@ export const sendApplicationEmail = async (toEmail, content) => {
             html: htmlContent, // HTML version
             attachments: [
                 {
-                    filename: 'CV - Salahdine Daha.pdf', // Professional filename
+                    filename: 'CV - Ayoub Oumha.pdf', // Professional filename
                     path: cvPath
                 }
             ]
