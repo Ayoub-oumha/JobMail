@@ -242,7 +242,9 @@ CLIENT_URL=http://localhost:5173
 # MongoDB
 MONGO_URI=mongodb://localhost:27017/jobmailer
 # Ou avec MongoDB Atlas :
-# MONGO_URI=mongodb+srv://user:password@cluster.mongodb.net/jobmailer
+# MONGO_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/jobmailer?retryWrites=true&w=majority&appName=Cluster0
+
+Si tu utilises Atlas, garde uniquement `MONGO_URI` dans `server/.env`. Le serveur se connecte directement via `mongoose.connect(process.env.MONGO_URI)`.
 
 # Gemini
 GEMINI_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxx

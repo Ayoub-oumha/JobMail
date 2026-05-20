@@ -50,6 +50,53 @@ Ayoub Oumha`,
     }
 }
 
+const buildStandardContent = (stackKey, templateConfig) => {
+    if (stackKey !== 'default') {
+        const htmlBody = templateConfig.textBody.replace(/\n/g, '<br/>');
+        return {
+            subject: templateConfig.subject,
+            textBody: templateConfig.textBody,
+            htmlBody
+        };
+    }
+
+    return {
+        subject: "Candidature au poste de Développeur Full Stack",
+        htmlBody: `
+            <p>Bonjour,</p>
+            <p>Je me permets de vous contacter afin de vous proposer mon profil pour d’éventuelles opportunités au sein de votre entreprise.</p>
+            <p>Développeur Full Stack, je dispose d’une expérience en développement d’applications web modernes, aussi bien côté frontend que backend. J’ai travaillé avec des technologies telles que Java, Spring Boot, Angular, React, Next.js, Node.js, PHP, Laravel, ainsi que sur des environnements DevOps incluant Docker et CI/CD.</p>
+            <p>Curieux, motivé et doté d’un bon esprit d’équipe, je suis toujours intéressé par de nouveaux défis techniques et par la contribution à des projets à forte valeur ajoutée.</p>
+            <p>Je me tiens à votre disposition pour toute information complémentaire et serais ravi d’échanger avec vous.</p>
+            <p>Cordialement,<br>Ayoub Oumha</p>
+        `,
+        textBody: `Bonjour,
+
+            Je me permets de vous contacter afin de vous proposer mon profil pour d’éventuelles opportunités au sein de votre entreprise.
+            
+            Développeur Full Stack, je dispose d’une expérience en développement d’applications web modernes, aussi bien côté frontend que backend. J’ai travaillé avec des technologies telles que Java, Spring Boot, Angular, React, Next.js, Node.js, PHP, Laravel, ainsi que sur des environnements DevOps incluant Docker et CI/CD.
+            
+            Curieux, motivé et doté d’un bon esprit d’équipe, je suis toujours intéressé par de nouveaux défis techniques et par la contribution à des projets à forte valeur ajoutée.
+            
+            Je me tiens à votre disposition pour toute information complémentaire et serais ravi d’échanger avec vous.
+            
+            Cordialement,
+            Ayoub Oumha`
+    };
+};
+
+const isTemporaryAiFailure = (error) => {
+    const message = (error?.message || '').toLowerCase();
+    return (
+        message.includes('high demand') ||
+        message.includes('try again later') ||
+        message.includes('quota') ||
+        message.includes('429') ||
+        message.includes('resource exhausted') ||
+        message.includes('overloaded')
+    );
+};
+
 export const applyForJob = async (req, res) => {
     try {
 
@@ -75,57 +122,54 @@ export const applyForJob = async (req, res) => {
         console.log(`Using stack: ${stackKey}, CV: ${templateConfig.cvFile}`);
 
         let generatedContent;
+        let warning = null;
 
         if (offerText && offerText.trim().length > 10) {
             // 1a. Generate email content via AI if offer exists
             console.log('Generating customized email content via AI...');
             // Pass the template text as reference if not default
             const referenceTemplate = stackKey !== 'default' ? templateConfig.textBody : "";
-            generatedContent = await generateEmailContent(offerText, referenceTemplate);
+            try {
+                generatedContent = await generateEmailContent(offerText, referenceTemplate);
+            } catch (aiError) {
+                if (!isTemporaryAiFailure(aiError)) {
+                    throw aiError;
+                }
+
+                console.warn('AI unavailable, using standard template fallback:', aiError.message);
+                generatedContent = buildStandardContent(stackKey, templateConfig);
+                warning = 'IA temporairement indisponible. Email standard envoyé avec succès.';
+            }
         } else {
              // 1b. Use standard templates
-             if (stackKey !== 'default') {
-                console.log(`Using standard ${stackKey} application template...`);
-                // Simple HTML conversion: Replace newlines with <br/> to avoid double spacing from <p> tags
-                const htmlBody = templateConfig.textBody.replace(/\n/g, '<br/>');
-                
-                generatedContent = {
-                    subject: templateConfig.subject,
-                    textBody: templateConfig.textBody,
-                    htmlBody: htmlBody
-                };
-            } else {
-                // Use standard spontaneous application template
-                console.log('Using standard spontaneous application template...');
-                generatedContent = {
-                    subject: "Candidature au poste de Développeur Full Stack",
-                    htmlBody: `
-                        <p>Bonjour,</p>
-                        <p>Je me permets de vous contacter afin de vous proposer mon profil pour d’éventuelles opportunités au sein de votre entreprise.</p>
-                        <p>Développeur Full Stack, je dispose d’une expérience en développement d’applications web modernes, aussi bien côté frontend que backend. J’ai travaillé avec des technologies telles que Java, Spring Boot, Angular, React, Next.js, Node.js, PHP, Laravel, ainsi que sur des environnements DevOps incluant Docker et CI/CD.</p>
-                        <p>Curieux, motivé et doté d’un bon esprit d’équipe, je suis toujours intéressé par de nouveaux défis techniques et par la contribution à des projets à forte valeur ajoutée.</p>
-                        <p>Je me tiens à votre disposition pour toute information complémentaire et serais ravi d’échanger avec vous.</p>
-                        <p>Cordialement,<br>Ayoub Oumha</p>
-                    `,
-                    textBody: `Bonjour,
-
-                        Je me permets de vous contacter afin de vous proposer mon profil pour d’éventuelles opportunités au sein de votre entreprise.
-                        
-                        Développeur Full Stack, je dispose d’une expérience en développement d’applications web modernes, aussi bien côté frontend que backend. J’ai travaillé avec des technologies telles que Java, Spring Boot, Angular, React, Next.js, Node.js, PHP, Laravel, ainsi que sur des environnements DevOps incluant Docker et CI/CD.
-                        
-                        Curieux, motivé et doté d’un bon esprit d’équipe, je suis toujours intéressé par de nouveaux défis techniques et par la contribution à des projets à forte valeur ajoutée.
-                        
-                        Je me tiens à votre disposition pour toute information complémentaire et serais ravi d’échanger avec vous.
-                        
-                        Cordialement,
-                        Ayoub Oumha`
-                };
-            }
+            console.log(stackKey !== 'default'
+                ? `Using standard ${stackKey} application template...`
+                : 'Using standard spontaneous application template...');
+            generatedContent = buildStandardContent(stackKey, templateConfig);
         }
         
         // Attach the correct CV path to the content object
         generatedContent.cvPath = cvPath;
         
+        // Create/refresh DB rows first so the dashboard always has a record
+        for (const recipient of emailList) {
+            await Email.updateOne(
+                { email: recipient },
+                {
+                    $set: {
+                        status: 'pending',
+                        error: null,
+                        sentAt: null
+                    },
+                    $setOnInsert: {
+                        email: recipient,
+                        createdAt: new Date()
+                    }
+                },
+                { upsert: true }
+            );
+        }
+
         // Use Promise.all to send efficiently in parallel (or mostly parallel)
         const sendPromises = emailList.map(recipient => sendApplicationEmail(recipient, generatedContent));
         const results = await Promise.allSettled(sendPromises);
@@ -134,7 +178,7 @@ export const applyForJob = async (req, res) => {
         const successful = results.filter(r => r.status === 'fulfilled');
         const failed = results.filter(r => r.status === 'rejected');
         
-        // Mark successfully sent emails as "sent" in database to avoid duplicates from scheduler
+        // Mark each email with its final send result
         for (let i = 0; i < emailList.length; i++) {
             if (results[i].status === 'fulfilled') {
                 await Email.updateOne(
@@ -145,8 +189,19 @@ export const applyForJob = async (req, res) => {
                             sentAt: new Date()
                         }
                     },
-                    { upsert: false } // Don't create if doesn't exist
+                    { upsert: false }
                 ).catch(err => console.log('Note: Email not in DB:', emailList[i]));
+            } else {
+                await Email.updateOne(
+                    { email: emailList[i] },
+                    {
+                        $set: {
+                            status: 'failed',
+                            error: results[i].reason?.message || 'Email send failed'
+                        }
+                    },
+                    { upsert: false }
+                ).catch(err => console.log('Note: Failed to update email status:', emailList[i]));
             }
         }
 
@@ -160,15 +215,8 @@ export const applyForJob = async (req, res) => {
             message: `Applications sent successfully to ${successful.length} out of ${emailList.length} recipients.`,
             details: {
                 subject: generatedContent.subject,
-                failedCount: failed.length
-            }
-        });
-
-        return res.status(200).json({ 
-            success: true, 
-            message: 'Application sent successfully',
-            details: {
-                subject: generatedContent.subject
+                failedCount: failed.length,
+                warning
             }
         });
 

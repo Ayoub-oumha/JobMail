@@ -23,6 +23,7 @@ const formSchema = z.object({
 export default function JobForm() {
   const [status, setStatus] = useState(null); // 'idle' | 'loading' | 'success' | 'error'
   const [errorMessage, setErrorMessage] = useState('');
+  const [infoMessage, setInfoMessage] = useState('');
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: zodResolver(formSchema),
@@ -34,6 +35,7 @@ export default function JobForm() {
   const onSubmit = async (data) => {
     setStatus('loading');
     setErrorMessage('');
+    setInfoMessage('');
     try {
       const response = await fetch('/api/apply', {
         method: 'POST',
@@ -54,6 +56,7 @@ export default function JobForm() {
       }
 
       setStatus('success');
+      setInfoMessage(responseData?.details?.warning || '');
       reset();
       
       // Reset status after 5 seconds
@@ -129,7 +132,10 @@ export default function JobForm() {
       </CardContent>
       <CardFooter className="flex justify-center">
         {status === 'success' && (
-           <p className="text-sm text-green-600 font-medium">✅ Candidature envoyée avec succès !</p>
+         <div className="text-center">
+          <p className="text-sm text-green-600 font-medium">✅ Candidature envoyée avec succès !</p>
+          {infoMessage && <p className="text-xs text-amber-600 mt-1">{infoMessage}</p>}
+         </div>
         )}
         {status === 'error' && (
            <p className="text-sm text-destructive font-medium">❌ {errorMessage || 'Une erreur est survenue. Vérifiez les logs.'}</p>
