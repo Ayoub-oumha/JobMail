@@ -22,6 +22,7 @@ const formSchema = z.object({
 
 export default function JobForm() {
   const [status, setStatus] = useState(null); // 'idle' | 'loading' | 'success' | 'error'
+  const [errorMessage, setErrorMessage] = useState('');
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: zodResolver(formSchema),
@@ -32,6 +33,7 @@ export default function JobForm() {
 
   const onSubmit = async (data) => {
     setStatus('loading');
+    setErrorMessage('');
     try {
       const response = await fetch('/api/apply', {
         method: 'POST',
@@ -45,8 +47,10 @@ export default function JobForm() {
         }),
       });
 
+      const responseData = await response.json();
+
       if (!response.ok) {
-        throw new Error('Erreur réseau');
+        throw new Error(responseData.error || `Erreur serveur (${response.status})`);
       }
 
       setStatus('success');
@@ -56,7 +60,8 @@ export default function JobForm() {
       setTimeout(() => setStatus(null), 5000);
 
     } catch (error) {
-      console.error(error);
+      console.error('Error:', error);
+      setErrorMessage(error.message);
       setStatus('error');
     }
   };
@@ -92,7 +97,7 @@ export default function JobForm() {
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <option value="">Général (Tous les stacks)</option>
-              <option value="php">PHP (Laravel, Symfony)</option>
+              <option value="php">PHP (Laravel)</option>
               <option value="mern">MERN Stack (Node.js, React)</option>
             </select>
           </div>
@@ -127,7 +132,7 @@ export default function JobForm() {
            <p className="text-sm text-green-600 font-medium">✅ Candidature envoyée avec succès !</p>
         )}
         {status === 'error' && (
-           <p className="text-sm text-destructive font-medium">❌ Une erreur est survenue. Vérifiez les logs.</p>
+           <p className="text-sm text-destructive font-medium">❌ {errorMessage || 'Une erreur est survenue. Vérifiez les logs.'}</p>
         )}
       </CardFooter>
     </Card>

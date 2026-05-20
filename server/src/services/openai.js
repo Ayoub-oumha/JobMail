@@ -3,7 +3,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
+const GEMINI_API_VERSION = process.env.GEMINI_API_VERSION || 'v1beta';
 
 const CANDIDATE_PROFILE = `
 Name: Ayoub Oumha
@@ -11,7 +12,7 @@ Role: Développeur Full Stack
 Core Stack: 
 Développement Frontend : : Html - Css - Javascript - React Js - TailwindCss - Angular.
 Développement Backend :  Php - JAVA - Typescript - NodeJs - MySql - MongoDB - PostgreSQL.
-Frameworks : : NextJs-  - Express.js - Laravel - Symfony - Spring Boot.
+Frameworks : : NextJs-  - Express.js - Laravel - Spring Boot.
 DevOps & Outils  : : Docker - GIT - Gitlab - Github - Aws - Kubernetes - Postman - Jira
 Experience:
 - Development of modern web and mobile applications (Frontend/Backend).
@@ -36,6 +37,23 @@ const extractJsonPayload = (rawText) => {
     }
 
     return cleaned.slice(jsonStart, jsonEnd + 1);
+};
+
+const getGeminiErrorMessage = (status, errorPayload) => {
+    try {
+        const payload = JSON.parse(errorPayload);
+        const retryDelay = payload?.error?.details?.find(detail => detail.retryDelay)?.retryDelay;
+
+        if (status === 429) {
+            return retryDelay
+                ? `Gemini free quota reached. Please wait ${retryDelay} and try again, or check your free-tier limits in Google AI Studio.`
+                : 'Gemini free quota reached. Please try again later or check your free-tier limits in Google AI Studio.';
+        }
+
+        return payload?.error?.message || `Gemini API Error (${status})`;
+    } catch {
+        return `Gemini API Error (${status}): ${errorPayload}`;
+    }
 };
 
 export const generateEmailContent = async (offerText, referenceTemplate = "") => {
@@ -82,11 +100,12 @@ Here is the job offer: "${offerText}".
 Generate the email application in French.`;
 
         const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(GEMINI_MODEL)}:generateContent?key=${GEMINI_API_KEY}`,
+            `https://generativelanguage.googleapis.com/${GEMINI_API_VERSION}/models/${encodeURIComponent(GEMINI_MODEL)}:generateContent`,
             {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'x-goog-api-key': GEMINI_API_KEY
                 },
                 body: JSON.stringify({
                     contents: [
@@ -96,7 +115,9 @@ Generate the email application in French.`;
                         }
                     ],
                     generationConfig: {
-                        responseMimeType: 'application/json'
+                        responseMimeType: 'application/json',
+                        maxOutputTokens: 700,
+                        temperature: 0.4
                     }
                 })
             }
@@ -104,7 +125,8 @@ Generate the email application in French.`;
 
         if (!response.ok) {
             const errorPayload = await response.text();
-            throw new Error(`Gemini API Error (${response.status}): ${errorPayload}`);
+            console.error(`❌ Gemini API failed (${response.status}):`, errorPayload);
+            throw new Error(getGeminiErrorMessage(response.status, errorPayload));
         }
 
         const data = await response.json();

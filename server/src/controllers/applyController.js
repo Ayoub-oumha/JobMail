@@ -10,14 +10,14 @@ const ASSETS_DIR = path.join(__dirname, '../../assets');
 
 const TEMPLATES = {
     php: {
-        subject: "Candidature — Développeur Full Stack / PHP (Laravel & Symfony)",
+        subject: "Candidature — Développeur Full Stack / PHP (Laravel )",
         textBody: `Bonjour,
 
-Je m’appelle Ayoub Oumha et je suis développeur Full Stack. Passionné par la création de solutions web performantes, je maîtrise aussi bien le Frontend (React Js, Tailwind) que le Backend (PHP, Laravel, Symfony). Mon expertise inclut également des compétences en DevOps (Docker, CI/CD) et la gestion de bases de données relationnelles.
+Je m’appelle Ayoub Oumha et je suis développeur Full Stack. Passionné par la création de solutions web performantes, je maîtrise aussi bien le Frontend (React Js, Tailwind) que le Backend (PHP, Laravel). Mon expertise inclut également des compétences en DevOps (Docker, CI/CD) et la gestion de bases de données relationnelles.
 
 J’ai eu l’opportunité de mettre mes compétences en pratique lors de stages concrets et de projets ambitieux, notamment en remportant le Premier Prix du Hackathon Sofrecom. Ces expériences m’ont appris à être réactif, créatif et à m’adapter rapidement aux besoins d’une équipe technique.
 
-Actuellement à la recherche d’une opportunité professionnelle sur des technologies PHP, Symfony ou Laravel, je suis disponible immédiatement et très motivé à l'idée de rejoindre votre équipe.
+Actuellement à la recherche d’une opportunité professionnelle sur des technologies PHP, Laravel, je suis disponible immédiatement et très motivé à l'idée de rejoindre votre équipe.
 
 Vous trouverez mon CV ci-joint pour plus de détails sur mon parcours. Je reste à votre entière disposition pour un échange ou un entretien.
 

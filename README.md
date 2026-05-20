@@ -272,7 +272,7 @@ Place tes fichiers PDF dans le dossier `server/assets/` :
 | Fichier | Stack ciblée |
 |---|---|
 | `cv.pdf` | Candidature générale / spontanée |
-| `PHP.pdf` | Postes PHP (Laravel, Symfony) |
+| `PHP.pdf` | Postes PHP (Laravel, ) |
 | `MERN STACK.pdf` | Postes MERN (React, Node.js) |
 
 > ⚠️ **Les noms de fichiers doivent être exacts** (respecter la casse).
